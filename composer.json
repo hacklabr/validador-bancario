@@ -1,0 +1,24 @@
+{
+    "name": "hacklab/bank-account-validator",
+    "description": "A simple account brazilian account validator",
+    "authors": [
+        {
+            "name": "hacklab",
+            "email": "aa@aa.aa"
+        }
+    ],
+    "require": {
+        "php": ">=5.6"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "BankValidator\\": "src/"
+        },
+        "files": [
+            "src/tools/InputProcessing.php"
+        ]
+    }
+}
