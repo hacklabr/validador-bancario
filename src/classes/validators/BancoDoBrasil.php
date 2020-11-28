@@ -7,6 +7,9 @@ use BankValidator\classes\exceptions\InvalidAccountSize;
 
 
 class BancoDoBrasil extends Generic {
+    static $agency_size = 4;
+    static $account_size = 8;
+
     private static function calculate_sum($itens) {
         $total_sum = 0;
         $itens_size = sizeof($itens);
@@ -52,11 +55,11 @@ class BancoDoBrasil extends Generic {
     }
 
     public static function agency_number_is_valid($agency) {
-        return Generic::agency_number_is_valid($agency) && strlen($agency) === 4;
+        return Generic::agency_number_is_valid($agency) && strlen($agency) === self::$agency_size;
     }
 
     public static function account_number_is_valid($account) {
-        return Generic::account_number_is_valid($account) && strlen($account) === 8;
+        return Generic::account_number_is_valid($account) && strlen($account) === self::$account_size;
     }
 
     public static function agency_digit_match($agency, $digit) {

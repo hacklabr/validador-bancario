@@ -56,10 +56,16 @@ class Validator{
      * @param [string] $agency_digit
      * @param [string] $account
      * @param [string] $account_digit
+     * @param [boolean] $pad_inputs: Make sure you know are you're doing, this param will fill the left gaps with zeors
      * @return boolean|array If the parameters are valid return true otherwise an array of erros is returned
      */
-    public static function validate($bank_code, $agency, $agency_digit, $account, $account_digit) {
+    public static function validate($bank_code, $agency, $agency_digit, $account, $account_digit, $pad_inputs = false) {
         $validator = BankCodeMapping::get_validator($bank_code);
+
+        if($pad_inputs) {
+            $agency = tools\pad_input_to_length($agency, $validator::$agency_size);
+            $account = tools\pad_input_to_length($account, $validator::$account_size);
+        }
         
         $errors = [];
 

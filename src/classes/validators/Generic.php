@@ -35,7 +35,7 @@ class Generic implements ValidatorI {
         return (boolean) preg_match('/^[a-zA-Z0-9]{1}$/', $account_digit);
     }
 
-    // Itaú, Bradesco, and Banco do Brasil  classes will overwrite
+    // Itaú, Bradesco and Banco do Brasil classes will overwrite
     public static function agency_digit_match($agency, $digit) {
         return true;
     }
