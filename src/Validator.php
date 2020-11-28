@@ -48,4 +48,56 @@ class Validator{
         return $validator::validate_account_digit($account, $account_digit) && $validator::validate_agency_digit($agency, $agency_digit);
     }
 
+
+    public static function validate($bank_code, $agency, $agency_digit, $account, $account_digit) {
+        $validator = BankCodeMapping::get_validator($bank_code);
+        
+        $errors = [];
+
+        if(!$validator::agency_number_is_valid($agency)) {
+            // echo "1";
+            $errors[] = 'INVALID_AGENCY_NUMBER';
+        }
+
+        if(!$validator::validate_agency_digit($agency_digit)) {
+            // echo "2";
+            $errors[] = 'INVALID_AGENCY_DIGIT';
+        }
+
+        if(!$validator::account_number_is_valid($account)) {
+            // echo "3";
+            $errors[] = 'INVALID_ACCOUNT_NUMBER';
+        }
+
+        if(!$validator::validate_account_digit($account_digit)) {
+            // echo "4";
+            $errors[] = 'INVALID_ACCOUNT_DIGIT';
+
+        }
+
+        if($validator::agency_number_is_valid($agency) && $validator::validate_agency_digit($agency_digit)) {
+            if(!$validator::agency_digit_match($agency, $agency_digit)) {
+                // echo "5";
+                $errors[] = 'AGENCY_DIGIT_DONT_MATCH';
+            }
+        }
+
+        if($validator::account_number_is_valid($account) && $validator::validate_account_digit($account_digit)) {
+            if(!$validator::account_digit_match($account, $account_digit)) {
+                // echo "6";
+                $errors[] = 'ACCOUNT_DIGIT_DONT_MATCH';
+            }
+        }
+
+        if(sizeof($errors)) {
+            return $errors;
+        }
+
+        return true;
+
+        //var_dump($validator::account_digit_match($agency, "6"));
+    }
+
+    
+
 }

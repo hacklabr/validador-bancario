@@ -6,7 +6,6 @@ use BankValidator;
 
 BankValidator\Validator::init();
 // Pad input before processing
-BankValidator\tools\pad_input_to_length("288149", 8);
 ?>
 
 <!DOCTYPE html>
@@ -17,6 +16,20 @@ BankValidator\tools\pad_input_to_length("288149", 8);
     <title>Document</title>
 </head>
 <body>
-    <?php var_dump(BankValidator\Validator::validate_account('001', '01232609', '7')); ?>
+    <?php 
+        $bank_code = '001';
+        $agency = BankValidator\tools\pad_input_to_length('5892', 4);
+        $agency_digit = '0';
+        // $agency_digit = '2';
+
+        $account = BankValidator\tools\pad_input_to_length('20394', 8);
+        $account_digit = '7';
+        // $account_digit = '1';
+        
+        $valid = BankValidator\Validator::validate($bank_code, $agency, $agency_digit, $account, $account_digit);
+        var_dump($valid);
+
+    
+    ?>
 </body>
 </html>

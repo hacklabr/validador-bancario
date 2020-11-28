@@ -6,73 +6,7 @@ use BankValidator\classes\exceptions\InvalidAgencySize;
 use BankValidator\classes\exceptions\InvalidAccountSize;
 
 
-class BancoDoBrasil implements ValidatorI {
-    public static function validate_agency_digit($agency, $digit) {
-        // Para obter o DV da agência, multiplica-se os quatro primeiros dígitos da
-        // agência pelos multiplicadores 5,4,3,2 nesta ordem. 
-
-        $agency_size = 4;
-        $agency_numbers = array_map('intval', str_split($agency));
-
-        if(!self::pre_validate_data($agency, $agency_size)) return false;
-
-        $result = self::calculate_sum($agency_numbers);
-        $right_digit = false;
-
-        if($result === 10) {
-            $right_digit = "X";
-        } else {
-            if ($result === 11) {
-                $right_digit = "0";
-            } else {
-                $right_digit = strval($result);
-            }
-        }
-
-        if($right_digit === $digit) {
-            return true;
-        }
-
-        // echo $right_digit;
-        // echo "<br>";
-
-        return false;
-    }
-
-    public static function validate_account_digit($agency, $digit) {
-        // Para obter o DV da agência, multiplica-se os quatro primeiros dígitos da
-        // agência pelos multiplicadores 5,4,3,2 nesta ordem. 
-
-        $account_size = 8;
-        $account_numbers = array_map('intval', str_split($agency));
-
-        if(!self::pre_validate_data($agency, $account_size, "account")) return false;
-
-        $result = self::calculate_sum($account_numbers);
-        // echo $result;
-
-        $right_digit = false;
-
-        if($result === 10) {
-            $right_digit = "X";
-        } else {
-            if ($result === 11) {
-                $right_digit = "0";
-            } else {
-                $right_digit = strval($result);
-            }
-        }
-
-        if($right_digit === $digit) {
-            return true;
-        }
-
-        // echo $right_digit;
-        // echo "<br>";
-
-        return false;
-    }
-
+class BancoDoBrasil extends Generic {
     private static function calculate_sum($itens) {
         $total_sum = 0;
         $itens_size = sizeof($itens);
@@ -82,7 +16,17 @@ class BancoDoBrasil implements ValidatorI {
             $total_sum += $itens[$i] * $multiplier;
         }
 
-        return 11 - ($total_sum % 11);
+        $result = 11 - ($total_sum % 11);
+
+        if($result === 10) {
+            return "X";
+        } else {
+            if ($result === 11) {
+              return "0";
+            } else {
+                return strval($result);
+            }
+        }
     }
 
     private static function pre_validate_data($data, $expected_size, $type = "agency") {
@@ -105,6 +49,30 @@ class BancoDoBrasil implements ValidatorI {
         }
 
         return true;
+    }
+
+    public static function agency_number_is_valid($agency) {
+        return Generic::agency_number_is_valid($agency) && strlen($agency) === 4;
+    }
+
+    public static function account_number_is_valid($account) {
+        return Generic::account_number_is_valid($account) && strlen($account) === 8;
+    }
+
+    public static function agency_digit_match($agency, $digit) {
+        $itens = array_map('intval', str_split($agency));
+        $right_digit = self::calculate_sum($itens);
+
+        //var_dump($right_digit);
+        return $right_digit === strtoupper($digit);
+    }
+
+    public static function account_digit_match($account, $digit) {
+        $itens = array_map('intval', str_split($account));
+        $right_digit = self::calculate_sum($itens);
+
+        //var_dump($right_digit);
+        return $right_digit === strtoupper($digit);
     }
 
 }
