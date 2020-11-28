@@ -26,6 +26,16 @@ BankValidator\Validator::init();
         $valid = BankValidator\Validator::validate($bank_code, $agency, $agency_digit, $account, $account_digit, true);
         var_dump($valid);
 
+
+        $bank_code = '341';
+        $agency = '0181';
+        $agency_digit = '';
+        $account = '16799';
+        $account_digit = '0';
+        
+        $valid = BankValidator\Validator::validate($bank_code, $agency, $agency_digit, $account, $account_digit, true);
+        var_dump($valid);
+
     
     ?>
 </body>

@@ -6,29 +6,28 @@ use BankValidator\classes\exceptions\InvalidAgencySize;
 use BankValidator\classes\exceptions\InvalidAccountSize;
 
 
-class BancoDoBrasil extends Generic {
+class Itau extends Generic {
     static $agency_size = 4;
-    static $account_size = 8;
+    static $account_size = 5;
 
     private static function calculate_sum($itens) {
-        $total_sum = 0;
-        $itens_size = sizeof($itens);
+        $numbers = $itens;
+        $sum_seq = 0;
+        $sequence = 0;
 
-        for($i = 0, $multiplier = $itens_size + 1; $i < $itens_size; $i++, $multiplier--) {
-            // print_r([ $itens[$i] * $multiplier]);
-            $total_sum += $itens[$i] * $multiplier;
+        for ($i = 0; $i < sizeof($numbers); $i++) {
+            $number = $numbers[$i];
+            $sequence = self::multiply_according_parity($number, $i);
+            $sequence = self::adjust_according_length($sequence);
+            $sum_seq += $sequence;
         }
+        
+        $result = $sum_seq % 10;
 
-        $result = 11 - ($total_sum % 11);
-
-        if($result === 10) {
-            return "X";
+        if($result === 0) {
+            return "0";
         } else {
-            if ($result === 11) {
-              return "0";
-            } else {
-                return strval($result);
-            }
+            return strval(10 - $result);
         }
     }
 
@@ -54,28 +53,38 @@ class BancoDoBrasil extends Generic {
         return true;
     }
 
-    public static function agency_number_is_valid($agency) {
-        return Generic::agency_number_is_valid($agency) && strlen($agency) === self::$agency_size;
+    public static function validate_agency_digit($agency_digit) {
+        return empty($agency_digit) || !isset($agency_digit);
     }
 
     public static function account_number_is_valid($account) {
         return Generic::account_number_is_valid($account) && strlen($account) === self::$account_size;
     }
 
-    public static function agency_digit_match($agency, $digit) {
-        $itens = array_map('intval', str_split($agency));
-        $right_digit = self::calculate_sum($itens);
-
-        //var_dump($right_digit);
-        return $right_digit === strtoupper($digit);
-    }
-
     public static function account_digit_match($account, $agency, $digit) {
-        $itens = array_map('intval', str_split($account));
+        $itens = array_map('intval', str_split($agency . $account));
         $right_digit = self::calculate_sum($itens);
 
-        //var_dump($right_digit);
         return $right_digit === strtoupper($digit);
     }
+
+    private static function multiply_according_parity($number, $i) {
+        return $number * ($i % 2 === 0 ? 2 : 1);
+    }
+
+
+    private static function adjust_according_length($sequence) {
+        if($sequence > 9) {
+            $numbers = str_split(strval($sequence));
+            $sequence = 0;
+
+            for ($i = 0; $i < sizeof($numbers); $i++) {
+                $sequence += intval($numbers[$i]);
+            }
+        }
+
+        return $sequence;
+    }
+
 
 }

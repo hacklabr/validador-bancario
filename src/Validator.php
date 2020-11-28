@@ -98,7 +98,7 @@ class Validator{
         }
 
         if($validator::account_number_is_valid($account) && $validator::validate_account_digit($account_digit)) {
-            if(!$validator::account_digit_match($account, $account_digit)) {
+            if(!$validator::account_digit_match($account, $agency, $account_digit)) {
                 // echo "6";
                 $errors[] = 'ACCOUNT_DIGIT_DONT_MATCH';
             }

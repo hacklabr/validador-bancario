@@ -12,5 +12,5 @@ interface ValidatorI {
 
     // Itaú, Bradesco, e Banco do Brasil 
     public static function agency_digit_match($agency, $digit);
-    public static function account_digit_match($account, $digit);
+    public static function account_digit_match($account, $agency, $digit);
 }
