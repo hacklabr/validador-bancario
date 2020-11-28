@@ -48,7 +48,16 @@ class Validator{
         return $validator::validate_account_digit($account, $account_digit) && $validator::validate_agency_digit($agency, $agency_digit);
     }
 
-
+    /**
+     * Validates if the following parameters generate a valid combination of a bank
+     *
+     * @param [string] $bank_code
+     * @param [string] $agency
+     * @param [string] $agency_digit
+     * @param [string] $account
+     * @param [string] $account_digit
+     * @return boolean|array If the parameters are valid return true otherwise an array of erros is returned
+     */
     public static function validate($bank_code, $agency, $agency_digit, $account, $account_digit) {
         $validator = BankCodeMapping::get_validator($bank_code);
         
