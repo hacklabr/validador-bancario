@@ -16,7 +16,7 @@ class BankCodeMapping {
                 "237" => new validators\Bradesco,
                 "341" => new validators\Itau,
                 "001" => new validators\BancoDoBrasil,
-                // "033" => SantanderValidator,
+                "033" => new validators\Santander,
                 // "745" => CitibankValidator,
                 // "399" => HSBCValidator,
                 // "041" => BanrisulValidator
