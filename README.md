@@ -56,7 +56,7 @@ Exemplo de retorno em caso de combinação invalida:
     	"ACCOUNT_DIGIT_DONT_MATCH"
      ]
 ## Exceções previstas
-- `BankValidator\classes\exceptions\NotRegistredBankCode`: É lançado quando o código do banco passado não está registrado. Os códigos dos bancos suportados podem ser vistos no inicio desse documento.
+- `BankValidator\classes\exceptions\NotRegistredBankCode`: É lançado quando o código do banco passado não está registrado. Os códigos dos bancos suportados podem ser vistos no inicio desse documento ([aqui](#validador-banc%C3%A1rio)).
 ## Desenvolvimento
 Esse ambiente faz do **docker**/**docker-compose**. Cerifique-se que ele está instalado. Caso contrario, [clique aqui](https://docs.docker.com/engine/install/) para aprender a instalar o **docker**. 
 - Para rodar o ambiente basta executar: <pre> docker-compose up </pre>
