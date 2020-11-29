@@ -3,9 +3,6 @@
 namespace BankValidator\classes;
 
 use BankValidator\classes\exceptions\NotRegistredBankCode;
-use BankValidator\classes\validators\BancoDoBrasil;
-use BankValidator\classes\validators\Itau;
-use BankValidator\classes\validators\Bradesco;
 
 
 class BankCodeMapping {
@@ -16,9 +13,9 @@ class BankCodeMapping {
             self::$validators = $validators;
         } else {
             self::$validators = [
-                "001" => new BancoDoBrasil,
-                "237" => new Bradesco,
-                "341" => new Itau,
+                "001" => new Validators\BancoDoBrasil,
+                "237" => new Validators\Bradesco,
+                "341" => new Validators\Itau,
                 // "033" => SantanderValidator,
                 // "745" => CitibankValidator,
                 // "399" => HSBCValidator,
