@@ -13,6 +13,10 @@ class Santander extends Generic {
         return empty($agency_digit) || !isset($agency_digit);
     }
 
+    public static function agency_number_is_valid($agency) {
+        return self::$agency_size === strlen($agency);
+    }
+
     public static function account_number_is_valid($account) {
         $valid = strlen($account) === self::$account_size;
 
@@ -25,6 +29,8 @@ class Santander extends Generic {
     }
 
     public static function account_digit_match($account, $agency, $digit) {
+        if(!self::agency_number_is_valid($agency)) return false;
+
         $itens = array_map('intval', str_split($agency . '00' . $account));
         $expected_digit = self::calculate_account($itens);
         // echo "<br>";
