@@ -13,9 +13,9 @@ class BankCodeMapping {
             self::$validators = $validators;
         } else {
             self::$validators = [
-                "001" => new Validators\BancoDoBrasil,
-                "237" => new Validators\Bradesco,
-                "341" => new Validators\Itau,
+                "001" => new validators\BancoDoBrasil,
+                "237" => new validators\Bradesco,
+                "341" => new validators\Itau,
                 // "033" => SantanderValidator,
                 // "745" => CitibankValidator,
                 // "399" => HSBCValidator,
