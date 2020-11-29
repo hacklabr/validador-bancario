@@ -23,4 +23,34 @@ class Santander extends Generic {
         $valid = $valid && in_array($given_type, $valid_account_types);
         return Generic::account_number_is_valid($account) && $valid;
     }
+
+    public static function account_digit_match($account, $agency, $digit) {
+        $itens = array_map('intval', str_split($agency . '00' . $account));
+        $expected_digit = self::calculate_account($itens);
+        // echo "<br>";
+        // echo $expected_digit;
+        // echo "<br>";
+
+        return $expected_digit == $digit;
+    }
+
+    private static function calculate_account($itens) {
+        $total_sum = 0;
+        $itens_size = sizeof($itens);
+
+        for($i = 0; $i < $itens_size; $i++) {
+            //print_r([self::multiply_according_to_weights($itens[$i], $i)]);
+            $total_sum += self::multiply_according_to_weights($itens[$i], $i) ;
+        }
+
+        $total_sum = ($total_sum % 10);
+        return 10 - $total_sum;
+    }
+
+    private static function multiply_according_to_weights($number, $i) {
+        $weights = [9, 7, 3, 1, 0, 0, 9, 7, 1, 3, 1, 9, 7, 3 ];
+        return ($number * $weights[$i]) % 10;
+    }
+
+
 }
