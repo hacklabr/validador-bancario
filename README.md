@@ -4,7 +4,7 @@
 Um simples validador de agencia, conta e dígitos verificadores de bancos brasileiros em **PHP**.
 
 **Bancos suportados:**
-| Nome | Código | Agencia | Conta
+| Nome | Código | Agência | Conta
 |--|--|--|--|
 | Bradesco | 237 | 4 + **DV** | 7 + **DV**
 | Itaú | 341 | 4  | 5 + **DV**
@@ -32,7 +32,7 @@ Um simples validador de agencia, conta e dígitos verificadores de bancos brasil
     // sucesso ou um array de erros em caso de falha(s).
 
 ## Erros possíveis no retorno
-Ao rodar uma validação todos os parâmetros são validados e dependendo do sucesso ou não da validação novos erros são adicionados a lista. A lista pode conter os seguintes erros:
+Ao rodar uma validação todos os parâmetros são validados e dependendo do sucesso ou não novos erros são adicionados a lista. A lista pode conter os seguintes erros:
  - `INVALID_AGENCY_NUMBER`: Agência não segue os padrões do banco.
  - `INVALID_AGENCY_DIGIT` : Digito verificador da agência não segue os padrões do banco
  - `INVALID_ACCOUNT_NUMBER`: A conta não segue os padrões do banco.
