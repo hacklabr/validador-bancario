@@ -1,7 +1,6 @@
 <?php
 namespace BankValidator\classes\validators;
 
-use BankValidator\interfaces\ValidatorI;
 use BankValidator\classes\exceptions\InvalidAgencySize;
 use BankValidator\classes\exceptions\InvalidAccountSize;
 
