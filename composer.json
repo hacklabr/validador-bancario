@@ -1,6 +1,6 @@
 {
     "name": "hacklab/bank-account-validator",
-    "description": "A simple account brazilian account validator",
+    "description": "A simple brazilian account validator",
     "authors": [
         {
             "name": "hacklab",
