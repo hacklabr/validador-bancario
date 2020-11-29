@@ -4,7 +4,7 @@ use BankValidator\classes\BankCodeMapping;
 
 class Validator{
     public static function init() {
-        BankCodeMapping::init();
+        
     }
 
     /**
@@ -16,6 +16,7 @@ class Validator{
      * @return boolean
      */
     public static function validate_account($bank_code, $account, $digit) {
+        BankCodeMapping::init();
         $validator = BankCodeMapping::get_validator($bank_code);
         return $validator::validate_account_digit($account, $digit);
     }
@@ -29,6 +30,7 @@ class Validator{
      * @return boolean
      */
     public static function validate_agency($bank_code, $agency, $digit) {
+        BankCodeMapping::init();
         $validator = BankCodeMapping::get_validator($bank_code);
         return $validator::validate_agency_digit($agency, $digit);
     }
@@ -45,6 +47,7 @@ class Validator{
      * @return boolean|array If the parameters are valid return true otherwise an array of erros is returned
      */
     public static function validate($bank_code, $agency, $agency_digit, $account, $account_digit, $pad_inputs = false) {
+        BankCodeMapping::init();
         $validator = BankCodeMapping::get_validator($bank_code);
 
         if($pad_inputs) {
