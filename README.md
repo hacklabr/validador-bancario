@@ -60,7 +60,8 @@ Exemplo de retorno em caso de combinação invalida:
 ## Desenvolvimento
 Esse ambiente faz do **docker**/**docker-compose**. Cerifique-se que ele está instalado. Caso contrario, [clique aqui](https://docs.docker.com/engine/install/) para aprender a instalar o **docker**. 
 - Para rodar o ambiente basta executar: <pre> docker-compose up </pre>
-- O **composer** é utilizado e instalado automaticamente no ambiente. Lembrando que para atualizar as referencias para o autoloader podemos usar o comando `composer dump -o`
+- O **composer** é utilizado e instalado automaticamente no ambiente. Para instalar as dependências pode-se utilizar o `composer install`.
+-  Lembrando que para atualizar as referencias para o **autoloader** podemos usar o comando `composer dump -o`
 ## Testes automatizados:
 Existe um conjunto de testes individuais para cada banco para validação de erros. Para executar os testes você pode rodar o **phpunit** em seu ambiente:
 <pre> vendor/bin/phpunit </pre>
