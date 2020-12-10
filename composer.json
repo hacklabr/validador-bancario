@@ -7,7 +7,7 @@
             "email": "contato@hacklab.com.br"
         }
     ],
-    "licence": "GPL-3.0-only",
+    "license": "GPL-3.0-only",
     "require": {
         "php": ">=5.6"
     },
