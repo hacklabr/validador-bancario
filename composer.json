@@ -3,10 +3,11 @@
     "description": "A simple brazilian account validator",
     "authors": [
         {
-            "name": "hacklab",
-            "email": "aa@aa.aa"
+            "name": "hacklab/",
+            "email": "contato@hacklab.com.br"
         }
     ],
+    "licence": "GPL-3.0-only",
     "require": {
         "php": ">=5.6"
     },
