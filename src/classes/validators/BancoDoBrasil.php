@@ -6,10 +6,18 @@ use BankValidator\classes\exceptions\InvalidAccountSize;
 
 
 class BancoDoBrasil extends Generic {
-    static $agency_size = 4;
-    static $account_size = 8;
+    const agency_size = 4;
+    const account_size = 8;
 
-    private static function calculate_sum($itens) {
+    public function calculate_account($account) {
+        return $this->calculate_sum($account);
+    }
+
+    public function calculate_agency($agency) {
+        return $this->calculate_sum($agency);
+    }
+
+    private function calculate_sum($itens) {
         $total_sum = 0;
         $itens_size = sizeof($itens);
 
@@ -31,7 +39,7 @@ class BancoDoBrasil extends Generic {
         }
     }
 
-    private static function pre_validate_data($data, $expected_size, $type = "agency") {
+    private function pre_validate_data($data, $expected_size, $type = "agency") {
         // Check if there arent any chars
         if(!is_numeric($data)) return false;
 
@@ -53,27 +61,25 @@ class BancoDoBrasil extends Generic {
         return true;
     }
 
-    public static function agency_number_is_valid($agency) {
-        return Generic::agency_number_is_valid($agency) && strlen($agency) === self::$agency_size;
+    public function agency_number_is_valid($agency) {
+        return Generic::agency_number_is_valid($agency) && strlen($agency) === self::agency_size;
     }
 
-    public static function account_number_is_valid($account) {
-        return Generic::account_number_is_valid($account) && strlen($account) === self::$account_size;
+    public function account_number_is_valid($account) {
+        return Generic::account_number_is_valid($account) && strlen($account) === self::account_size;
     }
 
-    public static function agency_digit_match($agency, $digit) {
+    public function agency_digit_match($agency, $digit) {
         $itens = array_map('intval', str_split($agency));
-        $right_digit = self::calculate_sum($itens);
+        $right_digit = $this->calculate_agency($itens);
 
-        //var_dump($right_digit);
         return $right_digit === strtoupper($digit);
     }
 
-    public static function account_digit_match($account, $agency, $digit) {
+    public function account_digit_match($account, $agency, $digit) {
         $itens = array_map('intval', str_split($account));
-        $right_digit = self::calculate_sum($itens);
+        $right_digit = $this->calculate_account($itens);
 
-        //var_dump($right_digit);
         return $right_digit === strtoupper($digit);
     }
 

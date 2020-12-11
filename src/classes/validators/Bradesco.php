@@ -5,10 +5,10 @@ use BankValidator\classes\exceptions\InvalidAccountSize;
 
 
 class Bradesco extends Generic {
-    static $agency_size = 4;
-    static $account_size = 7;
+    const agency_size = 4;
+    const account_size = 7;
 
-    private static function calculate_agency($itens) {
+    public function calculate_agency($itens) {
         $total_sum = 0;
         $itens_size = sizeof($itens);
 
@@ -30,13 +30,13 @@ class Bradesco extends Generic {
         }
     }
 
-    private static function calculate_account($itens) {
+    public function calculate_account($itens) {
         $total_sum = 0;
         $itens_size = sizeof($itens);
 
         for($i = 0; $i < $itens_size; $i++) {
             // print_r([ $itens[$i] * $multiplier]);
-            $total_sum += self::multiply_according_to_weights($itens[$i], $i) ;
+            $total_sum += $this->multiply_according_to_weights($itens[$i], $i) ;
         }
 
         $module = ($total_sum % 11);
@@ -52,22 +52,22 @@ class Bradesco extends Generic {
         }
     }
 
-    private static function multiply_according_to_weights($number, $i) {
+    private function multiply_according_to_weights($number, $i) {
         $weights = [2, 7, 6, 5, 4, 3, 2 ];
         return $number * $weights[$i];
     }
 
-    public static function agency_number_is_valid($agency) {
-        return Generic::agency_number_is_valid($agency) && strlen($agency) === self::$agency_size;
+    public function agency_number_is_valid($agency) {
+        return Generic::agency_number_is_valid($agency) && strlen($agency) === self::agency_size;
     }
 
-    public static function account_number_is_valid($account) {
-        return Generic::account_number_is_valid($account) && strlen($account) === self::$account_size;
+    public function account_number_is_valid($account) {
+        return Generic::account_number_is_valid($account) && strlen($account) === self::account_size;
     }
 
-    public static function agency_digit_match($agency, $digit) {
+    public function agency_digit_match($agency, $digit) {
         $itens = array_map('intval', str_split($agency));
-        $right_digit = self::calculate_agency($itens);
+        $right_digit = $this->calculate_agency($itens);
         $informed_digit = strtoupper($digit);
 
         if ($informed_digit === "0") {
@@ -77,9 +77,9 @@ class Bradesco extends Generic {
         return $right_digit === $informed_digit;
     }
 
-    public static function account_digit_match($account, $agency, $digit) {
+    public function account_digit_match($account, $agency, $digit) {
         $itens = array_map('intval', str_split($account));
-        $right_digit = self::calculate_account($itens);
+        $right_digit = $this->calculate_account($itens);
         $informed_digit = strtoupper($digit);
 
 
