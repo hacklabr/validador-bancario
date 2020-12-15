@@ -5,12 +5,9 @@ namespace BankValidator\interfaces;
  * Inteface used that all banks implement
  */
 interface ValidatorI {
-<<<<<<< Updated upstream
-=======
     public function use_agency_digit();
     public function use_account_digit();
 
->>>>>>> Stashed changes
     public function agency_number_is_valid($agency);
     public function validate_agency_digit($agency_digit);
     public function calculate_agency($agency);
