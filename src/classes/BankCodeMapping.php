@@ -3,29 +3,36 @@
 namespace BankValidator\classes;
 
 use BankValidator\classes\exceptions\NotRegistredBankCode;
+use BankValidator\interfaces\ValidatorI;
 
 
 class BankCodeMapping {
+    /**
+     * Validators
+     * 
+     * @var ValidatorI[]
+     */
     static $validators = [];
 
-    static public function init($validators = null) {
-        if ($validators) {
-            self::$validators = $validators;
-        } else {
-            self::$validators = [
-                "237" => new validators\Bradesco,
-                "341" => new validators\Itau,
-                "001" => new validators\BancoDoBrasil,
-                "033" => new validators\Santander,
-                // "745" => CitibankValidator,
-                // "399" => HSBCValidator,
-                // "041" => BanrisulValidator
-            ];
-        }
-    }
-
+    static $validators_classes = [
+        "237" => validators\Bradesco::class,
+        "341" => validators\Itau::class,
+        "001" => validators\BancoDoBrasil::class,
+        "033" => validators\Santander::class,
+    ];
+    
+    /**
+     * Returns a validator
+     * 
+     * @param mixed $code Bank number
+     * @return ValidatorI 
+     * @throws NotRegistredBankCode 
+     */
     public static function get_validator($code) {
         if (isset(self::$validators[$code])) {
+            return self::$validators[$code];
+        } else if(isset(self::$validators_classes[$code])) {
+            self::$validators[$code] = new self::$validators_classes[$code];
             return self::$validators[$code];
         } else {
             throw new NotRegistredBankCode("code: $code");
