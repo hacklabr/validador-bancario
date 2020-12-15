@@ -1,6 +1,7 @@
 {
     "name": "hacklab/bank-account-validator",
     "description": "A simple brazilian account validator",
+    "version": "1.0.0",
     "authors": [
         {
             "name": "hacklab/",

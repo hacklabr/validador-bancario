@@ -7,18 +7,26 @@ use BankValidator\classes\exceptions\InvalidAccountSize;
 
 
 class Itau extends Generic {
-    static $agency_size = 4;
-    static $account_size = 5;
+    const agency_size = 4;
+    const account_size = 5;
 
-    private static function calculate_sum($itens) {
+    public function calculate_account($account) {
+        return $this->calculate_sum($account);
+    }
+
+    public function calculate_agency($agency) {
+        return null;
+    }
+
+    private function calculate_sum($itens) {
         $numbers = $itens;
         $sum_seq = 0;
         $sequence = 0;
 
         for ($i = 0; $i < sizeof($numbers); $i++) {
             $number = $numbers[$i];
-            $sequence = self::multiply_according_parity($number, $i);
-            $sequence = self::adjust_according_length($sequence);
+            $sequence = $this->multiply_according_parity($number, $i);
+            $sequence = $this->adjust_according_length($sequence);
             $sum_seq += $sequence;
         }
         
@@ -31,7 +39,7 @@ class Itau extends Generic {
         }
     }
 
-    private static function pre_validate_data($data, $expected_size, $type = "agency") {
+    private function pre_validate_data($data, $expected_size, $type = "agency") {
         // Check if there arent any chars
         if(!is_numeric($data)) return false;
 
@@ -53,27 +61,27 @@ class Itau extends Generic {
         return true;
     }
 
-    public static function validate_agency_digit($agency_digit) {
+    public function validate_agency_digit($agency_digit) {
         return empty($agency_digit) || !isset($agency_digit);
     }
 
-    public static function account_number_is_valid($account) {
-        return Generic::account_number_is_valid($account) && strlen($account) === self::$account_size;
+    public function account_number_is_valid($account) {
+        return Generic::account_number_is_valid($account) && strlen($account) === self::account_size;
     }
 
-    public static function account_digit_match($account, $agency, $digit) {
+    public function account_digit_match($account, $agency, $digit) {
         $itens = array_map('intval', str_split($agency . $account));
-        $right_digit = self::calculate_sum($itens);
+        $right_digit = $this->calculate_account($itens);
 
         return $right_digit === strtoupper($digit);
     }
 
-    private static function multiply_according_parity($number, $i) {
+    private function multiply_according_parity($number, $i) {
         return $number * ($i % 2 === 0 ? 2 : 1);
     }
 
 
-    private static function adjust_according_length($sequence) {
+    private function adjust_according_length($sequence) {
         if($sequence > 9) {
             $numbers = str_split(strval($sequence));
             $sequence = 0;
