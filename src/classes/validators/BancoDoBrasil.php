@@ -8,6 +8,16 @@ use BankValidator\classes\exceptions\InvalidAccountSize;
 class BancoDoBrasil extends Generic {
     const agency_size = 4;
     const account_size = 8;
+    
+    const valid_chars = '0123456789X';
+
+    public function use_account_digit() {
+        return true;
+    }
+
+    public function use_agency_digit() {
+        return true;
+    }
 
     public function calculate_account($account) {
         return $this->calculate_sum($account);
@@ -18,6 +28,9 @@ class BancoDoBrasil extends Generic {
     }
 
     private function calculate_sum($itens) {
+        if (is_string($itens)) {
+            $itens = array_map('intval', str_split($itens));
+        }
         $total_sum = 0;
         $itens_size = sizeof($itens);
 
@@ -62,11 +75,11 @@ class BancoDoBrasil extends Generic {
     }
 
     public function agency_number_is_valid($agency) {
-        return Generic::agency_number_is_valid($agency) && strlen($agency) === self::agency_size;
+        return Generic::agency_number_is_valid($agency) && strlen($agency) <= self::agency_size;
     }
 
     public function account_number_is_valid($account) {
-        return Generic::account_number_is_valid($account) && strlen($account) === self::account_size;
+        return Generic::account_number_is_valid($account) && strlen($account) <= self::account_size;
     }
 
     public function agency_digit_match($agency, $digit) {

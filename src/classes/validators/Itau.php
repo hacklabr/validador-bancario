@@ -9,6 +9,16 @@ use BankValidator\classes\exceptions\InvalidAccountSize;
 class Itau extends Generic {
     const agency_size = 4;
     const account_size = 5;
+    
+    const valid_chars = '0123456789';
+
+    public function use_account_digit() {
+        return true;
+    }
+
+    public function use_agency_digit() {
+        return false;
+    }
 
     public function calculate_account($account) {
         return $this->calculate_sum($account);
@@ -19,6 +29,9 @@ class Itau extends Generic {
     }
 
     private function calculate_sum($itens) {
+        if (is_string($itens)) {
+            $itens = array_map('intval', str_split($itens));
+        }
         $numbers = $itens;
         $sum_seq = 0;
         $sequence = 0;
@@ -66,7 +79,7 @@ class Itau extends Generic {
     }
 
     public function account_number_is_valid($account) {
-        return Generic::account_number_is_valid($account) && strlen($account) === self::account_size;
+        return Generic::account_number_is_valid($account) && strlen($account) <= self::account_size;
     }
 
     public function account_digit_match($account, $agency, $digit) {

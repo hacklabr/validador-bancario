@@ -11,14 +11,17 @@ class Validator{
      * validate_account
      *
      * @param [string] $bank_code
+     * @param [string] $agency
      * @param [string] $account
      * @param [string] $digit
      * @return boolean
      */
-    public static function validate_account($bank_code, $account, $digit) {
-        BankCodeMapping::init();
+    public static function validate_account($bank_code, $agency, $account, $digit) {
         $validator = BankCodeMapping::get_validator($bank_code);
-        return $validator->validate_account_digit($account, $digit);
+
+        return  $validator->account_number_is_valid($account) &&
+                $validator->validate_account_digit($digit) &&
+                $validator->account_digit_match($account, $agency, $digit);
     }
 
     /**
@@ -30,9 +33,11 @@ class Validator{
      * @return boolean
      */
     public static function validate_agency($bank_code, $agency, $digit) {
-        BankCodeMapping::init();
         $validator = BankCodeMapping::get_validator($bank_code);
-        return $validator->validate_agency_digit($agency, $digit);
+
+        return  $validator->agency_number_is_valid($agency) && 
+                $validator->validate_agency_digit($digit) && 
+                $validator->agency_digit_match($agency, $digit);
     }
 
     /**
@@ -47,7 +52,6 @@ class Validator{
      * @return boolean|array If the parameters are valid return true otherwise an array of erros is returned
      */
     public static function validate($bank_code, $agency, $agency_digit, $account, $account_digit, $pad_inputs = false) {
-        BankCodeMapping::init();
         $validator = BankCodeMapping::get_validator($bank_code);
 
         if($pad_inputs) {
@@ -100,7 +104,4 @@ class Validator{
 
         //var_dump($validator->account_digit_match($agency, "6"));
     }
-
-    
-
 }

@@ -8,6 +8,16 @@ use BankValidator\classes\exceptions\InvalidAccountSize;
 class Santander extends Generic {
     const agency_size = 4;
     const account_size = 8;
+    
+    const valid_chars = '0123456789';
+
+    public function use_account_digit() {
+        return true;
+    }
+
+    public function use_agency_digit() {
+        return false;
+    }
 
     public function calculate_agency($agency) {
         return null;
@@ -45,8 +55,15 @@ class Santander extends Generic {
     }
 
     public function calculate_account($itens) {
+        if (is_string($itens)) {
+            $itens = array_map('intval', str_split($itens));
+        }
         $total_sum = 0;
         $itens_size = sizeof($itens);
+
+        if ($itens_size> self::account_size) {
+            return false;
+        }
 
         for($i = 0; $i < $itens_size; $i++) {
             //print_r([$this->multiply_according_to_weights($itens[$i], $i)]);

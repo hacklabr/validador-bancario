@@ -8,10 +8,27 @@ class Bradesco extends Generic {
     const agency_size = 4;
     const account_size = 7;
 
+    const valid_chars = '0123456789P';
+
+    public function use_account_digit() {
+        return true;
+    }
+
+    public function use_agency_digit() {
+        return true;
+    }
+
     public function calculate_agency($itens) {
+        if (is_string($itens)) {
+            $itens = array_map('intval', str_split($itens));
+        }
         $total_sum = 0;
         $itens_size = sizeof($itens);
-
+        
+        if ($itens_size> self::agency_size) {
+            return false;
+        }
+        
         for($i = 0, $multiplier = $itens_size + 1; $i < $itens_size; $i++, $multiplier--) {
             // print_r([ $itens[$i] * $multiplier]);
             $total_sum += $itens[$i] * $multiplier;
@@ -31,8 +48,15 @@ class Bradesco extends Generic {
     }
 
     public function calculate_account($itens) {
+        if (is_string($itens)) {
+            $itens = array_map('intval', str_split($itens));
+        }
         $total_sum = 0;
         $itens_size = sizeof($itens);
+
+        if ($itens_size> self::account_size) {
+            return false;
+        }
 
         for($i = 0; $i < $itens_size; $i++) {
             // print_r([ $itens[$i] * $multiplier]);
@@ -58,11 +82,11 @@ class Bradesco extends Generic {
     }
 
     public function agency_number_is_valid($agency) {
-        return Generic::agency_number_is_valid($agency) && strlen($agency) === self::agency_size;
+        return Generic::agency_number_is_valid($agency) && strlen($agency) <= self::agency_size;
     }
 
     public function account_number_is_valid($account) {
-        return Generic::account_number_is_valid($account) && strlen($account) === self::account_size;
+        return Generic::account_number_is_valid($account) && strlen($account) <= self::account_size;
     }
 
     public function agency_digit_match($agency, $digit) {

@@ -7,6 +7,15 @@ use BankValidator\classes\exceptions\InvalidAccountSize;
 
 
 class Generic implements ValidatorI {
+
+    public function use_account_digit() {
+        return true;
+    }
+
+    public function use_agency_digit() {
+        return true;
+    }
+    
     public function agency_number_is_valid($agency) {
         return (boolean) preg_match('/^(?!0000)([0-9]{4})$/', $agency);
     }
